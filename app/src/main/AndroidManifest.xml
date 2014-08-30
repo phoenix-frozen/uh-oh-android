@@ -3,7 +3,10 @@
     package="emergencycall.intertech.com.emergencycall" >
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|keyboardHidden|keyboard">
             <intent-filter>
@@ -19,6 +22,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="emergencycall.intertech.com.emergencycall.ui.MainActivity" />
         </activity>
     </application>
 

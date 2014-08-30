@@ -20,7 +20,7 @@ public class CallManager implements PhoneStateManager.CallListener {
 
     private Activity mContext;
 
-    private List<String> mNumbersToCall = new ArrayList<String>();
+    private String[] mNumbersToCall;
     private TelephonyManager mTelephonyManager;
     private int mTryCounter = 0;
     private long mCallTime = -1;
@@ -28,11 +28,11 @@ public class CallManager implements PhoneStateManager.CallListener {
 
     public CallManager(Activity context) {
         mContext = context;
-        setCallNumbers();
         setTelephonyManager();
     }
 
-    public void reset() {
+    public void reset(String[] phoneNumbers) {
+        mNumbersToCall = phoneNumbers;
         mTryCounter = 0;
     }
 
@@ -41,16 +41,9 @@ public class CallManager implements PhoneStateManager.CallListener {
             mCallInitiated = true;
             mCallTime = new Date().getTime();
             Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:" + mNumbersToCall.get(mTryCounter)));
+            intent.setData(Uri.parse("tel:" + mNumbersToCall[mTryCounter]));
             mContext.startActivity(intent);
         }
-    }
-
-    private void setCallNumbers() {
-        mNumbersToCall.add("4523432525");
-        mNumbersToCall.add("2345354333");
-        mNumbersToCall.add("07943732317");
-        mNumbersToCall.add("2345354333");
     }
 
     private void setTelephonyManager() {
@@ -63,7 +56,7 @@ public class CallManager implements PhoneStateManager.CallListener {
     }
 
     private boolean isAnotherNumberAvailable() {
-        return mTryCounter < mNumbersToCall.size();
+        return mNumbersToCall != null && mTryCounter < mNumbersToCall.length;
     }
 
     @Override
