@@ -194,7 +194,7 @@ public class LocationTransmitter implements LocationListener {
                     break;
 
                 default:
-                    message = "Hey, it's %s. I'm in a sketchy area, so I wanted someone to know where I was. I'm here: https://www.google.com/maps/@%s,%s17z";
+                    message = "Hey, it's %s. I'm in a sketchy area, so I wanted someone to know where I am. I'm here: https://www.google.com/maps/@%s,%s17z";
                     break;
             }
 
