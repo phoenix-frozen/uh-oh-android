@@ -10,14 +10,20 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button_call"
-        android:text="@string/call"
+        android:id="@+id/alert"
+        android:text="@string/alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/button_send_coordinates"
-        android:text="@string/send"
+        android:id="@+id/panic"
+        android:text="@string/panic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/settings"
+        android:text="@string/action_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

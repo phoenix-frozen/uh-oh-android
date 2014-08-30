@@ -1,10 +1,12 @@
-package emergencycall.intertech.com.emergencycall;
+package emergencycall.intertech.com.emergencycall.messaging;
 
 import android.location.*;
 import android.os.*;
 import android.content.*;
 //import android.telephony.*; //for when I do SMS
 import org.json.JSONException;
+
+import emergencycall.intertech.com.emergencycall.Configuration;
 
 /**
  * This class finds your location, and then sends it to someone.
@@ -14,25 +16,30 @@ import org.json.JSONException;
  * coarse location
  * fine location
  * internet
- * whatever we need to switch gps on
  *
  * Created by justin on 30/08/14.
  */
 public class LocationTransmitter implements LocationListener {
-    //TODO: store location
     private Location location;
     private LocationManager locationManager;
     private boolean watching = false;
     private Criteria locationCriteria = new Criteria();
 
+    private Configuration config = null;
+
     public LocationTransmitter(Context context) {
+        this(context, null);
+    }
+
+    public LocationTransmitter(Context context, Configuration config) {
+        //configuration object
+        this.config = config;
+
         //get a reference to the location manager
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
         //set up our location query criteria
         locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
-
-        //TODO: can we switch on GPS here?
 
         //fill location with an approximate location to get started
         //not that not using the global criteria object is *deliberate*
@@ -49,7 +56,7 @@ public class LocationTransmitter implements LocationListener {
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
-        //I think this is a who-cares...
+        //don't really care...
     }
 
     @Override
@@ -59,7 +66,7 @@ public class LocationTransmitter implements LocationListener {
 
     @Override
     public void onProviderDisabled(String s) {
-        //TODO: should we switch GPS on?
+        //don't really care...
     }
 
     /**
@@ -85,8 +92,12 @@ public class LocationTransmitter implements LocationListener {
         return location;
     }
 
-    public void transmitLocation(Configuration.Mode mode, String[] destinations) {
-        transmitLocation(mode, location, destinations);
+    public void transmitLocation() {
+        transmitLocation(config.getMyNumber(), config.getMode(), config.getPeopleToCall().values().toArray(new String[0]));
+    }
+
+    public void transmitLocation(String myNumber, Configuration.Mode mode, String[] destinations) {
+        transmitLocation(myNumber, mode, location, destinations);
     }
 
     /**
@@ -94,7 +105,7 @@ public class LocationTransmitter implements LocationListener {
      *
      * @param location Location to transmit. Must not be null.
      */
-    public void transmitLocation(Configuration.Mode mode, Location location, String[] destinations) {
+    public void transmitLocation(String myNumber, Configuration.Mode mode, Location location, String[] destinations) {
         if(location == null || mode == null || destinations == null) {
             throw new NullPointerException();
         }
@@ -105,7 +116,7 @@ public class LocationTransmitter implements LocationListener {
         //Generate JSON object
         WebSvcMessage webMessage;
         try {
-            webMessage = new WebSvcMessage(mode, location, destinations);
+            webMessage = new WebSvcMessage(myNumber, mode, location, destinations);
         } catch (JSONException e) {
             //well THAT shouldn't have happened...
             throw new RuntimeException(e);

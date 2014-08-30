@@ -1,5 +1,8 @@
 package emergencycall.intertech.com.emergencycall;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
+
 import java.util.*;
 
 /**
@@ -9,12 +12,26 @@ public class Configuration {
     public enum Mode {Alert, Emergency}
 
     private Mode mode = Mode.Alert;
+    private String myNumber = null;
+
+    private Configuration() {}
+
+    public Configuration(Context context) {
+        if(context != null) {
+            TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            if(telephony != null)
+                myNumber = telephony.getLine1Number();
+        }
+
+        if(myNumber == null)
+            myNumber = "";
+    }
 
     //<name, number>
     private final Map<String, String> peopleToCall = new HashMap<String, String>();
 
     public Map<String, String> getPeopleToCall() {
-        return Collections.unmodifiableMap(peopleToCall);
+        return peopleToCall; //XXX: we return a reference so that you can just fiddle with it yourself
     }
 
     public void setPeopleToCall(HashMap<String, String> peopleToCall) {
@@ -38,4 +55,14 @@ public class Configuration {
         this.mode = mode;
     }
 
+    public String getMyNumber() {
+        return myNumber;
+    }
+
+    public void setMyNumber(String myNumber) {
+        if(myNumber == null)
+            throw new NullPointerException();
+
+        this.myNumber = myNumber;
+    }
 }
