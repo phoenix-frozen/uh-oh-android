@@ -42,7 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void setTelephonyManager() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        //telephonyManager.listen();
+        //telephonyManager.listen(new TelephonyStateListener(getApplicationContext()));
     }
 
     private void call() {
