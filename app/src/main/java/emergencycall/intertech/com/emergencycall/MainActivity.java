@@ -1,11 +1,7 @@
 package emergencycall.intertech.com.emergencycall;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +13,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button mButtonCall;
     private Button mButtonSend;
 
+    private CallManager mCallManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,30 +23,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mButtonSend = (Button) findViewById(R.id.button_send_coordinates);
         mButtonCall.setOnClickListener(this);
         mButtonSend.setOnClickListener(this);
-        setTelephonyManager();
+        mCallManager = new CallManager(getApplicationContext());
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_call:
-                call();
+                mCallManager.call();
                 break;
             case R.id.button_send_coordinates:
 
                 break;
         }
-    }
-
-    private void setTelephonyManager() {
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        //telephonyManager.listen(new TelephonyStateListener(getApplicationContext()));
-    }
-
-    private void call() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + "453535654"));
-        startActivity(intent);
     }
 
     @Override
