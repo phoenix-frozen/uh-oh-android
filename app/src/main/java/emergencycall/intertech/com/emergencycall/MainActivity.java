@@ -1,7 +1,10 @@
 package emergencycall.intertech.com.emergencycall;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,22 +18,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private CallManager mCallManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mButtonCall = (Button) findViewById(R.id.button_call);
+        mButtonCall = (Button) findViewById(R.id.button_call_real);
         mButtonSend = (Button) findViewById(R.id.button_send_coordinates);
         mButtonCall.setOnClickListener(this);
         mButtonSend.setOnClickListener(this);
-        mCallManager = new CallManager(getApplicationContext());
+        mCallManager = new CallManager(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_call:
+            case R.id.button_call_real:
+                mCallManager.reset();
                 mCallManager.call();
                 break;
             case R.id.button_send_coordinates:

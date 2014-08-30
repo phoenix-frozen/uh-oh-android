@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button_call"
+        android:id="@+id/button_call_real"
         android:text="@string/call"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
