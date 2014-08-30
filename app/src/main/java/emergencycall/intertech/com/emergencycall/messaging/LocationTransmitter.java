@@ -107,11 +107,8 @@ public class LocationTransmitter implements LocationListener {
      * @param location Location to transmit. Must not be null.
      */
     public void transmitLocation(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
-        if(location == null || mode == null || destinations == null) {
-            throw new NullPointerException();
-        }
-        if(destinations.size() == 0) {
-            throw new ArrayIndexOutOfBoundsException();
+        if(location == null || mode == null || destinations == null || destinations.size() == 0) {
+            return;
         }
 
         //tx message

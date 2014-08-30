@@ -49,8 +49,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mButtonSettings.setOnClickListener(this);
         mButtonAbout.setOnClickListener(this);
 
-        mCallManager = new CallManager(getApplicationContext());
+        mCallManager = new CallManager(this);
         mLocationTransmitter = new LocationTransmitter(getApplicationContext());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            boolean cancel = intent.getExtras().getBoolean(CallManager.ARG_CANCEL_CALLS, false);
+            if (cancel) {
+                mCallManager.stop();
+            }
+        }
     }
 
     @Override
@@ -99,6 +110,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
                 //make phone call
+                mCallManager.reset(friend_numbers);
                 mCallManager.call();
                 //TODO: send text messages every few seconds?
                 break;
