@@ -24,3 +24,15 @@ proguard/
 
 # Log Files
 *.log
+.idea/.name
+app/app.iml
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/copyright/profiles_settings.xml
+.idea/scopes/scope_settings.xml
+UhOhApp.iml
+.idea/vcs.xml
+.idea/workspace.xml
