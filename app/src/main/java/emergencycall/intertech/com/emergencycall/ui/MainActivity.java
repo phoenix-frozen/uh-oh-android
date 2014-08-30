@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent != null) {
+        if (intent != null && intent.getExtras() != null) {
             boolean cancel = intent.getExtras().getBoolean(CallManager.ARG_CANCEL_CALLS, false);
             if (cancel) {
                 mCallManager.stop();

@@ -4,7 +4,7 @@ import android.location.*;
 import android.os.*;
 import android.content.*;
 import android.util.Log;
-//import android.telephony.*; //for when I do SMS
+import android.telephony.*;
 import java.io.*;
 import java.util.Map;
 import org.apache.http.*;
@@ -25,13 +25,15 @@ import emergencycall.intertech.com.emergencycall.R;
 public class LocationTransmitter implements LocationListener {
     private Location location;
     private LocationManager locationManager;
+    private SmsManager smsManager;
     private boolean watching = false;
     private Criteria locationCriteria = new Criteria();
     private String url;
 
     public LocationTransmitter(Context context) {
-        //get a reference to the location manager
+        //get a reference to the location and telephony managers
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        smsManager = SmsManager.getDefault();
 
         //set up our location query criteria
         locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -49,7 +51,7 @@ public class LocationTransmitter implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("LocationTransmitter", "location update received");
+        Log.v("LocationTransmitter", "location update received");
         this.location = location;
     }
 
@@ -112,8 +114,8 @@ public class LocationTransmitter implements LocationListener {
         }
 
         //tx message
-        doWebServiceTransmission(myName, myNumber, mode, location, destinations);
         doSmsTransmission(myName, myNumber, mode, location, destinations);
+        doWebServiceTransmission(myName, myNumber, mode, location, destinations);
     }
 
     private void doWebServiceTransmission(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
@@ -183,7 +185,23 @@ public class LocationTransmitter implements LocationListener {
     }
 
     private void doSmsTransmission(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
-        //TODO: WRITEME (Phase2)
+        for(Map.Entry<String, String> entry : destinations.entrySet()) {
+            String message;
+
+            switch(mode) {
+                case Emergency:
+                    message = "Hey, it's %s. I'm in serious trouble. Please come help me, or call the police. I'm here: https://www.google.com/maps/@%s,%s17z";
+                    break;
+
+                default:
+                    message = "Hey, it's %s. I'm in a sketchy area, so I wanted someone to know where I was. I'm here: https://www.google.com/maps/@%s,%s17z";
+                    break;
+            }
+
+            message = String.format(message, myName, Location.convert(location.getLatitude(), Location.FORMAT_DEGREES), Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
+
+            smsManager.sendTextMessage(entry.getValue(), null, message, null, null);
+        }
     }
 
     public enum Mode {Alert, Emergency}
