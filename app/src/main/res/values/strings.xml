@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">EmergencyCall</string>
+    <string name="app_name">Uh-Oh</string>
     <string name="action_settings">Settings</string>
 
     <string name="alert">Talk to me</string>
     <string name="panic">Call my friends</string>
+    <string name="about">About Uh-Oh</string>
 </resources>

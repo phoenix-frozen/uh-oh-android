@@ -4,8 +4,6 @@ import android.location.Location;
 
 import org.json.*;
 
-import emergencycall.intertech.com.emergencycall.Configuration;
-
 /**
  * Created by justin on 30/08/14.
  */
@@ -30,7 +28,7 @@ public class WebSvcMessage extends JSONObject {
 
     private WebSvcMessage() {}
 
-    public WebSvcMessage(String myNumber, Configuration.Mode mode, Location location, String[] destinations) throws JSONException {
+    public WebSvcMessage(String myNumber, LocationTransmitter.Mode mode, Location location, String[] destinations) throws JSONException {
         super();
 
         put("mode", mode.name().toLowerCase());

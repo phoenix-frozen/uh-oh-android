@@ -3,19 +3,13 @@ package emergencycall.intertech.com.emergencycall.messaging;
 import android.location.*;
 import android.os.*;
 import android.content.*;
+import android.util.Log;
 //import android.telephony.*; //for when I do SMS
 import org.json.JSONException;
-
-import emergencycall.intertech.com.emergencycall.Configuration;
 
 /**
  * This class finds your location, and then sends it to someone.
  * It does so by sending a message through a web service, and also via SMS.
- *
- * TODO: Permissions
- * coarse location
- * fine location
- * internet
  *
  * Created by justin on 30/08/14.
  */
@@ -25,16 +19,7 @@ public class LocationTransmitter implements LocationListener {
     private boolean watching = false;
     private Criteria locationCriteria = new Criteria();
 
-    private Configuration config = null;
-
     public LocationTransmitter(Context context) {
-        this(context, null);
-    }
-
-    public LocationTransmitter(Context context, Configuration config) {
-        //configuration object
-        this.config = config;
-
         //get a reference to the location manager
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -75,7 +60,13 @@ public class LocationTransmitter implements LocationListener {
      * @param looper Thread on which the update methods are called.
      */
     public void startWatching(Looper looper) {
+        watching = true;
         locationManager.requestLocationUpdates(0 /* no minimum time */, 0 /* no minimum distance */, locationCriteria, this, looper);
+    }
+
+    public void stopWatching() {
+        watching = false;
+        locationManager.removeUpdates(this);
     }
 
     /**
@@ -92,11 +83,7 @@ public class LocationTransmitter implements LocationListener {
         return location;
     }
 
-    public void transmitLocation() {
-        transmitLocation(config.getMyNumber(), config.getMode(), config.getPeopleToCall().values().toArray(new String[0]));
-    }
-
-    public void transmitLocation(String myNumber, Configuration.Mode mode, String[] destinations) {
+    public void transmitLocation(String myNumber, Mode mode, String[] destinations) {
         transmitLocation(myNumber, mode, location, destinations);
     }
 
@@ -105,7 +92,7 @@ public class LocationTransmitter implements LocationListener {
      *
      * @param location Location to transmit. Must not be null.
      */
-    public void transmitLocation(String myNumber, Configuration.Mode mode, Location location, String[] destinations) {
+    public void transmitLocation(String myNumber, Mode mode, Location location, String[] destinations) {
         if(location == null || mode == null || destinations == null) {
             throw new NullPointerException();
         }
@@ -123,6 +110,7 @@ public class LocationTransmitter implements LocationListener {
         }
 
         //TODO: tx message
+        Log.i("LocationTransmitter", "doing tx: " + webMessage.toString());
 
         /*TODO:
          * Phase2:
@@ -130,4 +118,6 @@ public class LocationTransmitter implements LocationListener {
          * Tx SMS to configured recipients
          */
     }
+
+    public enum Mode {None, Alert, Emergency}
 }

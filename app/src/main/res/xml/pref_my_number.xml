@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <EditTextPreference
+        android:key="my_number"
+        android:title="@string/pref_my_number"
+        android:defaultValue=""
+        android:selectAllOnFocus="true"
+        android:inputType="phone"
+        android:singleLine="true"
+        android:maxLines="1" />
+</PreferenceScreen>
