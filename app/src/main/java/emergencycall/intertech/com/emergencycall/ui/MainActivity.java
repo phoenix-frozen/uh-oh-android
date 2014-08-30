@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-import emergencycall.intertech.com.emergencycall.CallManager;
+import emergencycall.intertech.com.emergencycall.call.CallManager;
 import emergencycall.intertech.com.emergencycall.R;
 import emergencycall.intertech.com.emergencycall.messaging.LocationTransmitter;
 
@@ -110,7 +110,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
                 //make phone call
-                mCallManager.reset(friend_numbers);
+                mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.call();
                 //TODO: send text messages every few seconds?
                 break;
