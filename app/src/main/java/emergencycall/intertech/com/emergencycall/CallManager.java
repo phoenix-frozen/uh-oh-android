@@ -1,16 +1,16 @@
 package emergencycall.intertech.com.emergencycall;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import emergencycall.intertech.com.emergencycall.ui.MainActivity;
 import emergencycall.intertech.com.emergencycall.utils.LogUtils;
 
 /**
@@ -18,17 +18,21 @@ import emergencycall.intertech.com.emergencycall.utils.LogUtils;
  */
 public class CallManager implements PhoneStateManager.CallListener {
 
+    private static final int CALL_NOTIFICATION_ID = 7;
+    public static final String ARG_CANCEL_CALLS = "arg_cancel_calls";
+
     private Activity mContext;
 
     private String[] mNumbersToCall;
+    private NotificationManager mNotificationManager;
     private TelephonyManager mTelephonyManager;
     private int mTryCounter = 0;
-    private long mCallTime = -1;
     private boolean mCallInitiated = false;
 
     public CallManager(Activity context) {
         mContext = context;
         setTelephonyManager();
+        setNotificationManager();
     }
 
     public void reset(String[] phoneNumbers) {
@@ -37,18 +41,52 @@ public class CallManager implements PhoneStateManager.CallListener {
     }
 
     public void call() {
-        if (isCallingAvailable() && isAnotherNumberAvailable()) {
-            mCallInitiated = true;
-            mCallTime = new Date().getTime();
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:" + mNumbersToCall[mTryCounter]));
-            mContext.startActivity(intent);
+        if (isCallingAvailable()) {
+           if (isAnotherNumberAvailable()) {
+               mCallInitiated = true;
+               Intent intent = new Intent(Intent.ACTION_CALL);
+               intent.setData(Uri.parse("tel:" + mNumbersToCall[mTryCounter]));
+               mContext.startActivity(intent);
+               showNotification();
+           } else {
+               hideNotification();
+           }
         }
+    }
+
+    public void stop() {
+        mCallInitiated = false;
+        hideNotification();
+    }
+
+    private void hideNotification() {
+        NotificationManager mNotificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(CALL_NOTIFICATION_ID);
+    }
+
+    private void showNotification() {
+        int when = (int) System.currentTimeMillis();
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra(ARG_CANCEL_CALLS, true);
+        PendingIntent contentIntent = PendingIntent.getActivity(mContext, when, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(mContext)
+                        .setSmallIcon(android.R.drawable.ic_menu_call)
+                        .setContentTitle(mContext.getString(R.string.app_name))
+                        .setContentText(mContext.getString(R.string.calling_friends))
+                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_close_clear_cancel, mContext.getString(R.string.cancel), contentIntent));
+        mNotificationManager.notify(CALL_NOTIFICATION_ID, mBuilder.build());
     }
 
     private void setTelephonyManager() {
         mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         mTelephonyManager.listen(new PhoneStateManager(mContext, this), PhoneStateListener.LISTEN_CALL_STATE);
+    }
+
+    private void setNotificationManager() {
+        mNotificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     private boolean isCallingAvailable() {

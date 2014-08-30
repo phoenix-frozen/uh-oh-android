@@ -3,10 +3,9 @@
     <string name="app_name">Uh-Oh</string>
     <string name="action_settings">Settings</string>
 
-    <string name="call">Call Real</string>
-    <string name="send">Send</string>
-
     <string name="line_busy">If call fails, hang up and app will automatically call another friend</string>
+    <string name="calling_friends">Calling your friends</string>
+    <string name="cancel">Cancel</string>
 
     <string name="alert">Talk to me</string>
     <string name="panic">Call my friends</string>

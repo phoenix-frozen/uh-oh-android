@@ -49,6 +49,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            boolean cancel = intent.getExtras().getBoolean(CallManager.ARG_CANCEL_CALLS, false);
+            if (cancel) {
+                mCallManager.stop();
+            }
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         //attempt to query phone number
         if(what_my_phone_thinks_my_number_is == null) {
