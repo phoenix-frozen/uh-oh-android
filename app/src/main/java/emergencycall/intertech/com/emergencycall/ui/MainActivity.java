@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import emergencycall.intertech.com.emergencycall.CallManager;
 import emergencycall.intertech.com.emergencycall.R;
@@ -27,6 +27,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button mButtonPanic;
     private Button mButtonAlert;
     private Button mButtonSettings;
+    private Button mButtonAbout;
 
     private CallManager mCallManager;
     private LocationTransmitter mLocationTransmitter;
@@ -42,9 +43,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mButtonPanic = (Button) findViewById(R.id.button_panic);
         mButtonAlert = (Button) findViewById(R.id.button_alert);
         mButtonSettings = (Button) findViewById(R.id.button_settings);
+        mButtonAbout = (Button) findViewById(R.id.button_about);
         mButtonPanic.setOnClickListener(this);
         mButtonAlert.setOnClickListener(this);
         mButtonSettings.setOnClickListener(this);
+        mButtonAbout.setOnClickListener(this);
 
         mCallManager = new CallManager(getApplicationContext());
         mLocationTransmitter = new LocationTransmitter(getApplicationContext());
@@ -68,27 +71,33 @@ public class MainActivity extends Activity implements View.OnClickListener {
         String my_number = preferences.getString("my_number", what_my_phone_thinks_my_number_is);
         if(what_my_phone_thinks_my_number_is != null && !what_my_phone_thinks_my_number_is.equals("")) {
             my_number = what_my_phone_thinks_my_number_is;
-            preferences.edit().putString("my_number", my_number);
+            SharedPreferences.Editor editor = preferences.edit();
+            if(editor != null) {
+                editor.putString("my_number", my_number);
+                editor.apply();
+            }
         }
 
+        String my_name = preferences.getString("my_name", "noname");
+
         //query the numbers of the three friends we're supposed to call
-        HashSet<String> friend_number_set = new HashSet<String>();
-        friend_number_set.add(preferences.getString("friend1_number", ""));
-        friend_number_set.add(preferences.getString("friend2_number", ""));
-        friend_number_set.add(preferences.getString("friend3_number", ""));
+        TreeMap<String, String> friend_numbers = new TreeMap<String, String>();
+        friend_numbers.put(preferences.getString("friend1_name", ""), preferences.getString("friend1_number", ""));
+        friend_numbers.put(preferences.getString("friend2_name", ""), preferences.getString("friend2_number", ""));
+        friend_numbers.put(preferences.getString("friend3_name", ""), preferences.getString("friend3_number", ""));
 
-        friend_number_set.remove(null);
-        friend_number_set.remove("");
-
-        String[] friend_numbers = new String[friend_number_set.size()];
-        friend_numbers = friend_number_set.toArray(friend_numbers);
+        friend_numbers.remove("");
+        for(Map.Entry<String, String> entry : new HashSet<Map.Entry<String, String>>(friend_numbers.entrySet())) {
+            if(entry.getValue() == null || entry.getValue().equals(""))
+                friend_numbers.remove(entry.getKey());
+        }
 
         switch (v.getId()) {
             case R.id.button_panic:
                 //switch LocationTransmitter into watching mode
                 mLocationTransmitter.startWatching(null);
                 //send text message
-                mLocationTransmitter.transmitLocation(my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
+                mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
                 //make phone call
                 mCallManager.call();
                 //TODO: send text messages every few seconds?
@@ -98,13 +107,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 //switch LocationTransmitter into watching mode to make sure it's up to date
                 mLocationTransmitter.startWatching(null);
                 //send text message
-                mLocationTransmitter.transmitLocation(my_number, LocationTransmitter.Mode.Alert, friend_numbers);
+                mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Alert, friend_numbers);
                 //TODO: do simulated call
                 break;
 
             case R.id.button_settings:
                 //activate settings ui
                 startActivity(new Intent(this, SettingsActivity.class));
+                break;
+
+            case R.id.button_about:
+                //activate about screen
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
     }

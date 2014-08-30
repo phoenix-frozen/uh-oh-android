@@ -3,6 +3,15 @@
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
     <EditTextPreference
+        android:key="my_name"
+        android:title="@string/pref_my_name"
+        android:defaultValue=""
+        android:selectAllOnFocus="true"
+        android:inputType="textCapWords"
+        android:capitalize="words"
+        android:singleLine="true"
+        android:maxLines="1" />
+    <EditTextPreference
         android:key="my_number"
         android:title="@string/pref_my_number"
         android:defaultValue=""

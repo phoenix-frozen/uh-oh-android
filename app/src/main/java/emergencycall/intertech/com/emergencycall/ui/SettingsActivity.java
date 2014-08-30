@@ -3,19 +3,13 @@ package emergencycall.intertech.com.emergencycall.ui;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import emergencycall.intertech.com.emergencycall.R;
@@ -43,18 +37,6 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActionBar();
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @Override
@@ -68,8 +50,7 @@ public class SettingsActivity extends PreferenceActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            // TODO: If Settings has multiple levels, Up should navigate up
-            // that hierarchy.
+            // If Settings has multiple levels, Up should navigate up that hierarchy.
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
@@ -97,7 +78,7 @@ public class SettingsActivity extends PreferenceActivity {
         // use the older PreferenceActivity APIs.
 
         // Add my number
-        addPreferencesFromResource(R.xml.pref_my_number);
+        addPreferencesFromResource(R.xml.pref_me);
 
         // Add 'notifications' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
@@ -120,6 +101,7 @@ public class SettingsActivity extends PreferenceActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
+        bindPreferenceSummaryToValue(findPreference("my_name"));
         bindPreferenceSummaryToValue(findPreference("my_number"));
         bindPreferenceSummaryToValue(findPreference("friend1_name"));
         bindPreferenceSummaryToValue(findPreference("friend1_number"));
