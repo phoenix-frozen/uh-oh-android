@@ -15,7 +15,7 @@ import android.widget.Button;
 
 import java.util.HashSet;
 
-import emergencycall.intertech.com.emergencycall.CallManager;
+import emergencycall.intertech.com.emergencycall.call.CallManager;
 import emergencycall.intertech.com.emergencycall.R;
 import emergencycall.intertech.com.emergencycall.messaging.LocationTransmitter;
 

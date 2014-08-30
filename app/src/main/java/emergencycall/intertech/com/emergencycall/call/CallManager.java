@@ -1,4 +1,4 @@
-package emergencycall.intertech.com.emergencycall;
+package emergencycall.intertech.com.emergencycall.call;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import emergencycall.intertech.com.emergencycall.R;
 import emergencycall.intertech.com.emergencycall.ui.MainActivity;
 import emergencycall.intertech.com.emergencycall.utils.LogUtils;
 
@@ -49,6 +50,7 @@ public class CallManager implements PhoneStateManager.CallListener {
                mContext.startActivity(intent);
                showNotification();
            } else {
+               // TODO fake call
                hideNotification();
            }
         }
