@@ -19,7 +19,6 @@ import java.util.TreeMap;
 
 import emergencycall.intertech.com.emergencycall.call.CallManager;
 import emergencycall.intertech.com.emergencycall.R;
-import emergencycall.intertech.com.emergencycall.call.MediaManager;
 import emergencycall.intertech.com.emergencycall.messaging.LocationTransmitter;
 
 
@@ -128,7 +127,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Alert, friend_numbers);
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.simulateCall();
-                //TODO: do simulated call
                 break;
 
             case R.id.button_settings:
