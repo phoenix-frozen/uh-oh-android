@@ -46,6 +46,7 @@ public class CallManager implements PhoneStateManager.CallListener {
     }
 
     public void call() {
+        stopSimulatedCall();
         if (isCallingAvailable()) {
            if (isAnotherNumberAvailable()) {
                mCallInitiated = true;
@@ -82,6 +83,7 @@ public class CallManager implements PhoneStateManager.CallListener {
                         .setSmallIcon(android.R.drawable.ic_menu_call)
                         .setContentTitle(mContext.getString(R.string.app_name))
                         .setContentText(mContext.getString(R.string.calling_friends))
+                        .setOngoing(true)
                         .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_close_clear_cancel, mContext.getString(R.string.cancel), contentIntent));
         mNotificationManager.notify(CALL_NOTIFICATION_ID, builder.build());
     }
@@ -142,7 +144,8 @@ public class CallManager implements PhoneStateManager.CallListener {
 
     public void simulateCall() {
         mMediaManager.play();
-        showNotificationStartCalls();
+        //showNotificationStartCalls();
+        showNotificationCancelCalls();
     }
 
     public void stopSimulatedCall() {
