@@ -194,5 +194,5 @@ public class LocationTransmitter implements LocationListener {
         }
     }
 
-    public enum Mode {Alert, Emergency}
+    public enum Mode {Alert, Emergency, Ok}
 }
