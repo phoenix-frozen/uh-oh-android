@@ -9,6 +9,10 @@
     <string name="talking_to_me">Talking to me</string>
     <string name="cancel">Cancel</string>
 
+    <string name="button_talk_to_me">Talk to Me</string>
+    <string name="button_call_my_friends">Call My Friends</string>
+    <string name="button_safe">I am Safe</string>
+
     <string name="alert">Talk to me</string>
     <string name="panic">Call my friends</string>
     <string name="webservice_url">http://uhoh.herokuapp.com/uhoh</string>

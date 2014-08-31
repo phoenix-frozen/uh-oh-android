@@ -20,12 +20,12 @@ import emergencycall.intertech.com.emergencycall.messaging.LocationTransmitter;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private ImageView mButtonPanic;
-    private ImageView mButtonAlert;
+    private View mButtonPanic;
+    private View mButtonAlert;
     private ImageView mButtonSettings;
     private ImageView mButtonAbout;
-    private ImageView mButtonCancelAlert;
-    private ImageView mButtonCancelPanic;
+    private View mButtonCancelAlert;
+    private View mButtonCancelPanic;
 
     private CallManager mCallManager;
     private LocationTransmitter mLocationTransmitter;
@@ -38,12 +38,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.activity_main);
 
-        mButtonPanic = (ImageView) findViewById(R.id.button_panic);
-        mButtonAlert = (ImageView) findViewById(R.id.button_alert);
+        mButtonPanic = findViewById(R.id.button_panic);
+        mButtonAlert = findViewById(R.id.button_alert);
         mButtonSettings = (ImageView) findViewById(R.id.button_settings);
         mButtonAbout = (ImageView) findViewById(R.id.button_about);
-        mButtonCancelAlert = (ImageView) findViewById(R.id.button_cancel_alert);
-        mButtonCancelPanic = (ImageView) findViewById(R.id.button_cancel_panic);
+        mButtonCancelAlert = findViewById(R.id.button_cancel_alert);
+        mButtonCancelPanic = findViewById(R.id.button_cancel_panic);
         mButtonPanic.setOnClickListener(this);
         mButtonAlert.setOnClickListener(this);
         mButtonSettings.setOnClickListener(this);

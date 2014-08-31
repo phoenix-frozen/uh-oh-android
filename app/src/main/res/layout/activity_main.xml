@@ -46,56 +46,57 @@
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:rowCount="1"
-        android:columnCount="4"
         android:orientation="horizontal">
 
-        <ImageView
+        <TextView
             android:id="@+id/button_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_alert"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_column="0"
-            android:gravity="center_vertical|right"
-            android:layout_gravity="center_vertical|left"
-            android:layout_columnSpan="2"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/button_talk_to_me"
+            android:textSize="@dimen/font_size_normal"
+            android:drawablePadding="@dimen/padding_normal"
+            android:drawableTop="@drawable/icon_alert"/>
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_cancel_alert"
-            android:layout_gravity="center_vertical|left"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/icon_cancel"
+            android:drawablePadding="@dimen/padding_normal"
+            android:drawableTop="@drawable/icon_cancel"
+            android:gravity="center"
+            android:text="@string/button_safe"
             android:visibility="gone" />
 
-        <ImageView
+        <TextView
             android:id="@+id/button_panic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_panic"
-            android:layout_alignTop="@+id/button_alert"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_column="2"
-            android:gravity="center_vertical|left"
-            android:layout_gravity="center_vertical|right"
-            android:layout_columnSpan="2"
+            android:textSize="@dimen/font_size_normal"
+            android:drawablePadding="@dimen/padding_normal"
+            android:drawableTop="@drawable/icon_panic"
+            android:gravity="center"
+            android:text="@string/button_call_my_friends"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1" />
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_cancel_panic"
-            android:layout_gravity="center_vertical|left"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/font_size_normal"
             android:layout_weight="1"
-            android:src="@drawable/icon_cancel"
+            android:drawablePadding="@dimen/padding_normal"
+            android:drawableTop="@drawable/icon_cancel"
+            android:gravity="center"
+            android:text="@string/button_safe"
             android:visibility="gone" />
-
     </LinearLayout>
 
         <ImageView
@@ -105,11 +106,7 @@
             android:src="@drawable/icon_settings"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_row="5"
-            android:layout_rowSpan="2"
-            android:layout_column="0"
-            android:layout_columnSpan="1" />
+            android:layout_alignParentStart="true" />
 
         <ImageView
             android:id="@+id/button_about"
@@ -118,11 +115,7 @@
             android:src="@drawable/icon_info"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_column="2"
-            android:layout_columnSpan="1"
-            android:layout_row="5"
-            android:layout_rowSpan="2" />
+            android:layout_alignParentEnd="true"/>
 
 
 </RelativeLayout>
