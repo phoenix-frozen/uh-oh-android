@@ -46,7 +46,6 @@ public class CallManager implements PhoneStateManager.CallListener {
     }
 
     public void call() {
-        stopSimulatedCall();
         if (isCallingAvailable()) {
            if (isAnotherNumberAvailable()) {
                mCallInitiated = true;

@@ -67,7 +67,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_cancel"
+            android:id="@+id/button_cancel_alert"
             android:layout_gravity="center_vertical|left"
             android:layout_weight="1"
             android:src="@drawable/icon_cancel"
@@ -86,6 +86,16 @@
             android:layout_gravity="center_vertical|right"
             android:layout_columnSpan="2"
             android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_cancel_panic"
+            android:layout_gravity="center_vertical|left"
+            android:layout_weight="1"
+            android:src="@drawable/icon_cancel"
+            android:visibility="gone" />
+
     </LinearLayout>
 
         <ImageView

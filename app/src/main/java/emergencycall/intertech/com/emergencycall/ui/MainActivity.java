@@ -24,7 +24,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mButtonAlert;
     private ImageView mButtonSettings;
     private ImageView mButtonAbout;
-    private ImageView mButtonCancel;
+    private ImageView mButtonCancelAlert;
+    private ImageView mButtonCancelPanic;
 
     private CallManager mCallManager;
     private LocationTransmitter mLocationTransmitter;
@@ -41,12 +42,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mButtonAlert = (ImageView) findViewById(R.id.button_alert);
         mButtonSettings = (ImageView) findViewById(R.id.button_settings);
         mButtonAbout = (ImageView) findViewById(R.id.button_about);
-        mButtonCancel = (ImageView) findViewById(R.id.button_cancel);
+        mButtonCancelAlert = (ImageView) findViewById(R.id.button_cancel_alert);
+        mButtonCancelPanic = (ImageView) findViewById(R.id.button_cancel_panic);
         mButtonPanic.setOnClickListener(this);
         mButtonAlert.setOnClickListener(this);
         mButtonSettings.setOnClickListener(this);
         mButtonAbout.setOnClickListener(this);
-        mButtonCancel.setOnClickListener(this);
+        mButtonCancelAlert.setOnClickListener(this);
+        mButtonCancelPanic.setOnClickListener(this);
 
         mCallManager = new CallManager(this);
         mLocationTransmitter = new LocationTransmitter(getApplicationContext());
@@ -62,12 +65,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             boolean cancel = intent.getExtras().getBoolean(CallManager.ARG_CANCEL_CALLS, false);
             if (cancel) {
                 mCallManager.stop();
-            }
-            boolean start = intent.getExtras().getBoolean(CallManager.ARG_START_CALLS, false);
-            if (start) {
                 mCallManager.stopSimulatedCall();
-                mCallManager.call();
+                restoreButtons();
             }
+//            boolean start = intent.getExtras().getBoolean(CallManager.ARG_START_CALLS, false);
+//            if (start) {
+//                mCallManager.stopSimulatedCall();
+//                mCallManager.call();
+//            }
         }
     }
 
@@ -112,27 +117,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_panic:
-                //TODO: abort any simulation call in progress
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
+                //stop simulated call if any
+                mCallManager.stopSimulatedCall();
+                mCallManager.stop();
                 //make phone call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.call();
                 //replace our button with cancel
-                mButtonAlert.setVisibility(ImageView.VISIBLE);
-                mButtonPanic.setVisibility(ImageView.GONE);
-                mButtonCancel.setVisibility(ImageView.VISIBLE);
+                restoreAlertButton();
+                togglePanicButton();
+
                 break;
 
             case R.id.button_alert:
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Alert, friend_numbers);
+                //stop simulated call if any
+                mCallManager.stopSimulatedCall();
+                mCallManager.stop();
                 //do simulated call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.simulateCall();
                 //replace our button with cancel
-                mButtonAlert.setVisibility(ImageView.GONE);
-                mButtonCancel.setVisibility(ImageView.VISIBLE);
+                restorePanicButton();
+                toggleAlertButton();
                 break;
 
             case R.id.button_settings:
@@ -145,19 +155,58 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
 
-            case R.id.button_cancel:
-                /*TODO: (cancel button)
-                 * did we do an alert or a panic?
-                 * if alert, stop simulation
-                 * if panic, send texts to your friends
-                 */
-                //restore the UI to its natural state?
-                mButtonCancel.setVisibility(ImageView.GONE);
-                mButtonAlert.setVisibility(ImageView.VISIBLE);
-                mButtonPanic.setVisibility(ImageView.VISIBLE);
+            case R.id.button_cancel_alert:
+                mCallManager.stopSimulatedCall();
+                mCallManager.stop();
+                toggleAlertButton();
                 break;
+            case R.id.button_cancel_panic:
+                //stop simulated call if any
+                mCallManager.stopSimulatedCall();
+                mCallManager.stop();
+                togglePanicButton();
+                break;
+
+
+
         }
     }
+
+
+    private void toggleAlertButton() {
+        if (mButtonAlert.getVisibility() == View.VISIBLE) {
+            mButtonAlert.setVisibility(ImageView.GONE);
+            mButtonCancelAlert.setVisibility(ImageView.VISIBLE);
+        } else {
+            restoreAlertButton();
+        }
+    }
+
+    private void togglePanicButton() {
+        if (mButtonPanic.getVisibility() == View.VISIBLE) {
+            mButtonPanic.setVisibility(ImageView.GONE);
+            mButtonCancelPanic.setVisibility(ImageView.VISIBLE);
+        } else {
+            restorePanicButton();
+        }
+
+    }
+
+    private void restorePanicButton() {
+        mButtonPanic.setVisibility(ImageView.VISIBLE);
+        mButtonCancelPanic.setVisibility(ImageView.GONE);
+    }
+
+    private void restoreAlertButton() {
+        mButtonAlert.setVisibility(ImageView.VISIBLE);
+        mButtonCancelAlert.setVisibility(ImageView.GONE);
+    }
+
+    private void restoreButtons() {
+        restoreAlertButton();
+        restorePanicButton();
+    }
+
 
     @Override
     public void onDestroy() {
