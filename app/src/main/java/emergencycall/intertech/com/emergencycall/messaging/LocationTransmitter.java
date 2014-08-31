@@ -25,15 +25,20 @@ import emergencycall.intertech.com.emergencycall.R;
 public class LocationTransmitter implements LocationListener {
     private Location location;
     private LocationManager locationManager;
-    private SmsManager smsManager;
+    //private SmsManager smsManager;
     private boolean watching = false;
     private Criteria locationCriteria = new Criteria();
     private String url;
 
+    private String mLastName;
+    private String mLastMyNumber;
+    private Map<String, String> mLastDestitations;
+
+
     public LocationTransmitter(Context context) {
         //get a reference to the location and telephony managers
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-        smsManager = SmsManager.getDefault();
+        //smsManager = SmsManager.getDefault();
 
         //set up our location query criteria
         locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -100,6 +105,9 @@ public class LocationTransmitter implements LocationListener {
     }
 
     public void transmitLocation(String myName, String myNumber, Mode mode, Map<String, String> destinations) {
+        mLastName = myName;
+        mLastMyNumber = myNumber;
+        mLastDestitations = destinations;
         transmitLocation(myName, myNumber, mode, location, destinations);
     }
 
@@ -116,16 +124,6 @@ public class LocationTransmitter implements LocationListener {
         //tx message
         doSmsTransmission(myName, myNumber, mode, location, destinations);
         doWebServiceTransmission(myName, myNumber, mode, location, destinations);
-    }
-
-    public void doWebServiceOkTransmission() {
-        JSONObject okMessage = new JSONObject();
-        try {
-            okMessage.put("mode", "ok");
-            doSend(okMessage.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void doSend(String message) {
@@ -202,9 +200,13 @@ public class LocationTransmitter implements LocationListener {
             for (Map.Entry<String, String> entry : destinations.entrySet()) {
                 String message = String.format("Hey, it's %s. I'm in a sketchy area, so I wanted someone to know where I am. I'm here: https://www.google.com/maps/@%s,%s17z", myName, Location.convert(location.getLatitude(), Location.FORMAT_DEGREES), Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
 
-                smsManager.sendTextMessage(entry.getValue(), null, message, null, null);
+                //smsManager.sendTextMessage(entry.getValue(), null, message, null, null);
             }
         }
+    }
+
+    public void transmitSameLocation(Mode mode) {
+        transmitLocation(mLastName, mLastMyNumber, mode, mLastDestitations);
     }
 
     public enum Mode {Alert, Emergency, Ok}

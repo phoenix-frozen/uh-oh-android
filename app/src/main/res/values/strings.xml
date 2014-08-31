@@ -18,14 +18,33 @@
     <string name="webservice_url">http://uhoh.herokuapp.com/uhoh</string>
     <string name="title_activity_about">About Friend Line</string>
 
-    <string name="about">Friend Line was built as part of the InterTech and Facebook LGBT+ 2014 \'Make Stuff Better\' hackathon in London.\n
-\n
-It was created in 24 hours (so there are a few features we have yet to complete) by:\n
-Benno Ommerborn\n
-Joseph Finlayson\n
-Louise Franklin\n
-Justin King-Lacroix\n
-Richard Matheson\n
-Liudas Survila</string>
+    <string name="about">It was created in 24 hours (so there are a few feature enhancements we have yet to complete) by:\n
+        Benno Ommerborn\n
+        Joseph Finlayson\n
+        Louise Franklin\n
+        Justin King-Lacroix\n
+        Richard Matheson
+        Liudas Survila\n</string>
+    
+    <string name="about1">About the app</string>
+    <string name="about2">Uh-Oh was built as part of the InterTech and FaceBook LGBT+ 2014 \'Make Stuff Better\' hackathon in London.</string>
+    <string name="about3">It was created in 24 hours (so there are a few feature enhancements we have yet to complete) by:\n
+        Benno Ommerborn\n
+        Joseph Finlayson\n
+        Louise Franklin\n
+        Justin King-Lacroix\n
+        Richard Matheson
+        Liudas Survila\n</string>
+
+    <string name="about4">How it works</string>
+    <string name="about5">Uh-Oh is designed to help keep you safe when you might be feeling vulnerable, particularly walking home alone at night. </string>
+    <string name="about6">After you first install Uh-Oh go to Settings where you can programme in the phone numbers of three of your friends or family who you would like to contact if you feel unsafe. The app then works by offering you two levels of service;</string>
+    <string name="about7">1. Talk To Me: Select the amber speech icon and be guided through a simulated conversation while your GPS position is recorded, just in case something should happen. The idea of this is to keep you talking and calm, making any potential unfriendlies believe you are on the phone and therefore less of a target. </string>
+    <string name="about8">2. Call My Friends: Select the red call icon to directly alert and call three of your friends or family. When this option is selected the app will automatically send an sms message to all three of your listed friends and call your friends in turn until one answers. If they don\'t answer it will default to the Talk To Me simulated conversation. </string>
+    <string name="about9">Once you are feeling safe again, you will be asked to use the Cancel, I’m Safe button in the app. This will hang-up the simulated call or, if you used the Call My Friends option, will send your friends a second sms message to confirm that you are now safe. </string>
+
+    <string name="about10">What data gets sent when I use the app?</string>
+    <string name="about11">Whenever you use Uh-Oh your phone will send your GPS position to our central server along with your phone number and the number of your friends. If you don’t select to Call My Friends, nothing will be done with this individual data and it will be cleansed from our database on a regular basis – we do keep it for a little bit, just in case! </string>
+    <string name="about12">The only information we retain are the co-ordinate positions where people have used the app, without any other unique identifiers. We then map these on an ongoing basis to highlight areas where users feel particularly vulnerable, so that they can be avoided or issues raised with local authorities.  You can check out the latest map on our website. </string>
 
 </resources>

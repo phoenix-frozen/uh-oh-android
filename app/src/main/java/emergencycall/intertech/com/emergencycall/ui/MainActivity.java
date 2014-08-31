@@ -66,13 +66,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (cancel) {
                 mCallManager.stop();
                 mCallManager.stopSimulatedCall();
+                mLocationTransmitter.transmitSameLocation(LocationTransmitter.Mode.Ok);
                 restoreButtons();
             }
-//            boolean start = intent.getExtras().getBoolean(CallManager.ARG_START_CALLS, false);
-//            if (start) {
-//                mCallManager.stopSimulatedCall();
-//                mCallManager.call();
-//            }
         }
     }
 
@@ -155,21 +151,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.button_cancel_alert:
-                //mLocationTransmitter.doWebServiceOkTransmission();
                 mCallManager.stopSimulatedCall();
                 mCallManager.stop();
                 toggleAlertButton();
                 break;
             case R.id.button_cancel_panic:
-                //mLocationTransmitter.doWebServiceOkTransmission();
+                //send text message
+                mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Ok, friend_numbers);
                 //stop simulated call if any
                 mCallManager.stopSimulatedCall();
                 mCallManager.stop();
                 togglePanicButton();
                 break;
-
-
-
         }
     }
 

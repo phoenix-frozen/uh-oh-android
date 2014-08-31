@@ -8,9 +8,98 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="emergencycall.intertech.com.emergencycall.ui.AboutActivity">
 
-    <TextView
-        android:text="@string/about"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about1"
+                android:textStyle="bold"
+
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about2"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about3"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about4"
+                android:textStyle="bold"
+
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about5"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about6"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about7"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about8"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about9"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about10"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about11"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about12"
+                android:paddingBottom="@dimen/padding_normal"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
 
 </RelativeLayout>
