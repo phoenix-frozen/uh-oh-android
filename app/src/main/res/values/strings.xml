@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Uh-Oh</string>
+    <string name="app_name">Friend Line</string>
     <string name="action_settings">Settings</string>
 
     <string name="line_busy">If call fails, hang up and app will automatically call another friend</string>
@@ -12,8 +12,16 @@
     <string name="alert">Talk to me</string>
     <string name="panic">Call my friends</string>
     <string name="webservice_url">http://uhoh.herokuapp.com/uhoh</string>
-    <string name="title_activity_about">About Uh-Oh</string>
+    <string name="title_activity_about">About Friend Line</string>
 
-    <string name="about">Hello world!</string>
+    <string name="about">Friend Line was built as part of the InterTech and Facebook LGBT+ 2014 \'Make Stuff Better\' hackathon in London.\n
+\n
+It was created in 24 hours (so there are a few features we have yet to complete) by:\n
+Benno Ommerborn\n
+Joseph Finlayson\n
+Louise Franklin\n
+Justin King-Lacroix\n
+Richard Matheson\n
+Liudas Survila</string>
 
 </resources>
