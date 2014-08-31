@@ -23,14 +23,16 @@ public class WebSvcMessage extends JSONObject {
         super();
 
         JSONObject from = new JSONObject();
-        JSONObject to = new JSONObject();
+        JSONArray to = new JSONArray();
 
         from.put("name", myName);
-        from.put("number", myNumber);
+        from.put("num", myNumber);
 
         for(Map.Entry<String, String> entry : destinations.entrySet()) {
-            to.put("name", entry.getKey());
-            to.put("number", entry.getValue());
+            JSONObject ob = new JSONObject();
+            ob.put("name", entry.getKey());
+            ob.put("num", entry.getValue());
+            to.put(ob);
         }
 
         put("from", from);
