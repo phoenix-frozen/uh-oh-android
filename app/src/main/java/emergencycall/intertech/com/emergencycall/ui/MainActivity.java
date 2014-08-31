@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private ImageView mButtonPanic;
     private ImageView mButtonAlert;
-    private Button mButtonSettings;
+    private ImageView mButtonSettings;
     private ImageView mButtonAbout;
 
     private CallManager mCallManager;
@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mButtonPanic = (ImageView) findViewById(R.id.button_panic);
         mButtonAlert = (ImageView) findViewById(R.id.button_alert);
-        mButtonSettings = (Button) findViewById(R.id.button_settings);
+        mButtonSettings = (ImageView) findViewById(R.id.button_settings);
         mButtonAbout = (ImageView) findViewById(R.id.button_about);
         mButtonPanic.setOnClickListener(this);
         mButtonAlert.setOnClickListener(this);
