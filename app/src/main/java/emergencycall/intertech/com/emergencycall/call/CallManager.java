@@ -27,6 +27,7 @@ public class CallManager implements PhoneStateManager.CallListener {
     private String[] mNumbersToCall;
     private NotificationManager mNotificationManager;
     private TelephonyManager mTelephonyManager;
+    private MediaManager mMediaManager;
     private int mTryCounter = 0;
     private boolean mCallInitiated = false;
 
@@ -34,6 +35,7 @@ public class CallManager implements PhoneStateManager.CallListener {
         mContext = context;
         setTelephonyManager();
         setNotificationManager();
+        setMediaManager();
     }
 
     public void reset(String[] phoneNumbers) {
@@ -50,14 +52,15 @@ public class CallManager implements PhoneStateManager.CallListener {
                mContext.startActivity(intent);
                showNotification();
            } else {
-               // TODO fake call
-               hideNotification();
+               // fake call
+               mMediaManager.play();
            }
         }
     }
 
     public void stop() {
         mCallInitiated = false;
+        mMediaManager.stop();
         hideNotification();
     }
 
@@ -91,6 +94,10 @@ public class CallManager implements PhoneStateManager.CallListener {
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
+    private void setMediaManager() {
+        mMediaManager = new MediaManager(mContext, this);
+    }
+
     private boolean isCallingAvailable() {
         return mTelephonyManager != null && mTelephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE;
     }
@@ -112,4 +119,8 @@ public class CallManager implements PhoneStateManager.CallListener {
         }
     }
 
+    @Override
+    public void onFakeCallFinished() {
+        hideNotification();
+    }
 }
