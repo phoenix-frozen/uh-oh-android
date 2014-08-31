@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mButtonAlert;
     private ImageView mButtonSettings;
     private ImageView mButtonAbout;
+    private ImageView mButtonCancel;
 
     private CallManager mCallManager;
     private LocationTransmitter mLocationTransmitter;
@@ -40,10 +41,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mButtonAlert = (ImageView) findViewById(R.id.button_alert);
         mButtonSettings = (ImageView) findViewById(R.id.button_settings);
         mButtonAbout = (ImageView) findViewById(R.id.button_about);
+        mButtonCancel = (ImageView) findViewById(R.id.button_cancel);
         mButtonPanic.setOnClickListener(this);
         mButtonAlert.setOnClickListener(this);
         mButtonSettings.setOnClickListener(this);
         mButtonAbout.setOnClickListener(this);
+        mButtonCancel.setOnClickListener(this);
 
         mCallManager = new CallManager(this);
         mLocationTransmitter = new LocationTransmitter(getApplicationContext());
@@ -109,11 +112,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_panic:
+                //TODO: abort any simulation call in progress
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
                 //make phone call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.call();
+                //replace our button with cancel
+                mButtonAlert.setVisibility(ImageView.VISIBLE);
+                mButtonPanic.setVisibility(ImageView.GONE);
+                mButtonCancel.setVisibility(ImageView.VISIBLE);
                 break;
 
             case R.id.button_alert:
@@ -122,6 +130,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 //do simulated call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.simulateCall();
+                //replace our button with cancel
+                mButtonAlert.setVisibility(ImageView.GONE);
+                mButtonCancel.setVisibility(ImageView.VISIBLE);
                 break;
 
             case R.id.button_settings:
@@ -132,6 +143,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.button_about:
                 //activate about screen
                 startActivity(new Intent(this, AboutActivity.class));
+                break;
+
+            case R.id.button_cancel:
+                /*TODO: (cancel button)
+                 * did we do an alert or a panic?
+                 * if alert, stop simulation
+                 * if panic, send texts to your friends
+                 */
+                //restore the UI to its natural state?
+                mButtonCancel.setVisibility(ImageView.GONE);
+                mButtonAlert.setVisibility(ImageView.VISIBLE);
+                mButtonPanic.setVisibility(ImageView.VISIBLE);
                 break;
         }
     }
