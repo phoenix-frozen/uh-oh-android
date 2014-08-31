@@ -19,6 +19,7 @@ import java.util.TreeMap;
 
 import emergencycall.intertech.com.emergencycall.call.CallManager;
 import emergencycall.intertech.com.emergencycall.R;
+import emergencycall.intertech.com.emergencycall.call.MediaManager;
 import emergencycall.intertech.com.emergencycall.messaging.LocationTransmitter;
 
 

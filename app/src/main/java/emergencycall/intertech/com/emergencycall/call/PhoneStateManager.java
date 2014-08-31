@@ -47,6 +47,7 @@ public class PhoneStateManager extends PhoneStateListener {
 
         void onLineNotAvailable();
         void onLineAvailable();
+        void onFakeCallFinished();
 
     }
 
