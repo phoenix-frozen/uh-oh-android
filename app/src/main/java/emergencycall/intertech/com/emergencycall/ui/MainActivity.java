@@ -120,8 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
                 //stop simulated call if any
-                mCallManager.stopSimulatedCall();
-                mCallManager.stop();
+
                 //make phone call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.call();
@@ -156,11 +155,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.button_cancel_alert:
+                //mLocationTransmitter.doWebServiceOkTransmission();
                 mCallManager.stopSimulatedCall();
                 mCallManager.stop();
                 toggleAlertButton();
                 break;
             case R.id.button_cancel_panic:
+                //mLocationTransmitter.doWebServiceOkTransmission();
                 //stop simulated call if any
                 mCallManager.stopSimulatedCall();
                 mCallManager.stop();
@@ -171,7 +172,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         }
     }
-
 
     private void toggleAlertButton() {
         if (mButtonAlert.getVisibility() == View.VISIBLE) {

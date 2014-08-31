@@ -118,17 +118,17 @@ public class LocationTransmitter implements LocationListener {
         doWebServiceTransmission(myName, myNumber, mode, location, destinations);
     }
 
-    private void doWebServiceTransmission(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
-        //Generate JSON object
-        WebSvcMessage message;
+    public void doWebServiceOkTransmission() {
+        JSONObject okMessage = new JSONObject();
         try {
-            message = new WebSvcMessage(myName, myNumber, mode, location, destinations);
+            okMessage.put("mode", "ok");
+            doSend(okMessage.toString());
         } catch (JSONException e) {
-            //well THAT shouldn't have happened...
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        Log.d("LocationTransmitter", "doing tx: " + message.toString());
+    }
 
+    private void doSend(String message) {
         new AsyncTask<String, Void, Void>() {
             @Override
             protected Void doInBackground(String... params) {
@@ -181,7 +181,20 @@ public class LocationTransmitter implements LocationListener {
 
                 return null;
             }
-        }.execute(message.toString());
+        }.execute(message);
+    }
+
+    private void doWebServiceTransmission(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
+        //Generate JSON object
+        WebSvcMessage message;
+        try {
+            message = new WebSvcMessage(myName, myNumber, mode, location, destinations);
+        } catch (JSONException e) {
+            //well THAT shouldn't have happened...
+            throw new RuntimeException(e);
+        }
+        Log.d("LocationTransmitter", "doing tx: " + message.toString());
+        doSend(message.toString());
     }
 
     private void doSmsTransmission(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
