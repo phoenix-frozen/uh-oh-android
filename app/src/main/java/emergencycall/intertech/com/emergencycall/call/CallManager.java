@@ -20,7 +20,9 @@ import emergencycall.intertech.com.emergencycall.utils.LogUtils;
 public class CallManager implements PhoneStateManager.CallListener {
 
     private static final int CALL_NOTIFICATION_ID = 7;
+    private static final int FAKE_CALL_NOTIFICATION_ID = 8;
     public static final String ARG_CANCEL_CALLS = "arg_cancel_calls";
+    public static final String ARG_START_CALLS = "arg_start_calls";
 
     private Activity mContext;
 
@@ -50,7 +52,7 @@ public class CallManager implements PhoneStateManager.CallListener {
                Intent intent = new Intent(Intent.ACTION_CALL);
                intent.setData(Uri.parse("tel:" + mNumbersToCall[mTryCounter]));
                mContext.startActivity(intent);
-               showNotification();
+               showNotificationCancelCalls();
            } else {
                // fake call
                mMediaManager.play();
@@ -61,28 +63,42 @@ public class CallManager implements PhoneStateManager.CallListener {
     public void stop() {
         mCallInitiated = false;
         mMediaManager.stop();
-        hideNotification();
+        hideNotifications();
     }
 
-    private void hideNotification() {
+    private void hideNotifications() {
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(CALL_NOTIFICATION_ID);
+        mNotificationManager.cancel(FAKE_CALL_NOTIFICATION_ID);
     }
 
-    private void showNotification() {
-        int when = (int) System.currentTimeMillis();
+    private void showNotificationCancelCalls() {
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.putExtra(ARG_CANCEL_CALLS, true);
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, when, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder mBuilder =
+        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(mContext)
                         .setSmallIcon(android.R.drawable.ic_menu_call)
                         .setContentTitle(mContext.getString(R.string.app_name))
                         .setContentText(mContext.getString(R.string.calling_friends))
                         .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_close_clear_cancel, mContext.getString(R.string.cancel), contentIntent));
-        mNotificationManager.notify(CALL_NOTIFICATION_ID, mBuilder.build());
+        mNotificationManager.notify(CALL_NOTIFICATION_ID, builder.build());
     }
+
+    private void showNotificationStartCalls() {
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra(ARG_START_CALLS, true);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(mContext)
+                        .setSmallIcon(android.R.drawable.ic_menu_call)
+                        .setContentTitle(mContext.getString(R.string.app_name))
+                        .setContentText(mContext.getString(R.string.talking_to_me))
+                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_call, mContext.getString(R.string.panic), pendingIntent));
+        mNotificationManager.notify(FAKE_CALL_NOTIFICATION_ID, builder.build());
+    }
+
 
     private void setTelephonyManager() {
         mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
@@ -121,6 +137,16 @@ public class CallManager implements PhoneStateManager.CallListener {
 
     @Override
     public void onFakeCallFinished() {
-        hideNotification();
+        hideNotifications();
+    }
+
+    public void simulateCall() {
+        mMediaManager.play();
+        showNotificationStartCalls();
+    }
+
+    public void stopSimulatedCall() {
+        mMediaManager.stop();
+        reset(mNumbersToCall);
     }
 }

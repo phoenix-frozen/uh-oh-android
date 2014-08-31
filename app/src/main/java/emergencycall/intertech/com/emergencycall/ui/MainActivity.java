@@ -62,6 +62,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (cancel) {
                 mCallManager.stop();
             }
+            boolean start = intent.getExtras().getBoolean(CallManager.ARG_START_CALLS, false);
+            if (start) {
+                mCallManager.stopSimulatedCall();
+                mCallManager.call();
+            }
         }
     }
 
@@ -121,6 +126,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mLocationTransmitter.startWatching(null);
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Alert, friend_numbers);
+                //mCallManager.simulateCall();
                 //TODO: do simulated call
                 break;
 

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 
 /**
  * Created by liudassurvila on 30/08/2014.
  */
 public class MediaManager {
+
+    private static final int DELAY_BETWEEN_FILES = 5000;
 
     private Context mContext;
 
@@ -21,6 +24,7 @@ public class MediaManager {
 
     public MediaManager(Context context, PhoneStateManager.CallListener listener) {
         mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
         mContext = context;
         mListener = listener;
     }
@@ -45,11 +49,16 @@ public class MediaManager {
                     // when first file is complete play second
                     if (mCurrentPlayingFile == 0) {
                         mCurrentPlayingFile++;
-                        play();
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                play();
+                            }
+                        }, DELAY_BETWEEN_FILES);
+
                     }
-//                    if (mListener != null) {
-//                        mListener.onFakeCallFinished();
-//                    }
                 }
             });
             mMediaPlayer.start();
@@ -61,6 +70,7 @@ public class MediaManager {
 
     public void stop() {
         try {
+            mCurrentPlayingFile = 0;
             mMediaPlayer.stop();
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@
 
     <string name="line_busy">If call fails, hang up and app will automatically call another friend</string>
     <string name="calling_friends">Calling your friends</string>
+    <string name="talking_to_me">Talking to me</string>
     <string name="cancel">Cancel</string>
 
     <string name="alert">Talk to me</string>
