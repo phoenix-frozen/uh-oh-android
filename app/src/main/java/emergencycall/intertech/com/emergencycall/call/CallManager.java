@@ -146,6 +146,7 @@ public class CallManager implements PhoneStateManager.CallListener {
     }
 
     public void stopSimulatedCall() {
+        hideNotifications();
         mMediaManager.stop();
         reset(mNumbersToCall);
     }

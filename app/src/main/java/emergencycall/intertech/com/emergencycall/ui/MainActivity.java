@@ -126,7 +126,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mLocationTransmitter.startWatching(null);
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Alert, friend_numbers);
-                //mCallManager.simulateCall();
+                mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
+                mCallManager.simulateCall();
                 //TODO: do simulated call
                 break;
 
