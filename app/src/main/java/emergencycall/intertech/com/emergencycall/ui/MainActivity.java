@@ -1,33 +1,29 @@
 package emergencycall.intertech.com.emergencycall.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.view.*;
+import android.widget.*;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-import emergencycall.intertech.com.emergencycall.call.CallManager;
 import emergencycall.intertech.com.emergencycall.R;
+import emergencycall.intertech.com.emergencycall.call.*;
 import emergencycall.intertech.com.emergencycall.messaging.LocationTransmitter;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private Button mButtonPanic;
-    private Button mButtonAlert;
-    private Button mButtonSettings;
-    private Button mButtonAbout;
+    private ImageView mButtonPanic;
+    private ImageView mButtonAlert;
+    private ImageView mButtonSettings;
+    private ImageView mButtonAbout;
 
     private CallManager mCallManager;
     private LocationTransmitter mLocationTransmitter;
@@ -40,10 +36,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.activity_main);
 
-        mButtonPanic = (Button) findViewById(R.id.button_panic);
-        mButtonAlert = (Button) findViewById(R.id.button_alert);
-        mButtonSettings = (Button) findViewById(R.id.button_settings);
-        mButtonAbout = (Button) findViewById(R.id.button_about);
+        mButtonPanic = (ImageView) findViewById(R.id.button_panic);
+        mButtonAlert = (ImageView) findViewById(R.id.button_alert);
+        mButtonSettings = (ImageView) findViewById(R.id.button_settings);
+        mButtonAbout = (ImageView) findViewById(R.id.button_about);
         mButtonPanic.setOnClickListener(this);
         mButtonAlert.setOnClickListener(this);
         mButtonSettings.setOnClickListener(this);
@@ -51,6 +47,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mCallManager = new CallManager(this);
         mLocationTransmitter = new LocationTransmitter(getApplicationContext());
+
+        //switch LocationTransmitter into watching mode, to make sure we get a GPS fix
+        mLocationTransmitter.startWatching(null);
     }
 
     @Override
@@ -110,21 +109,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_panic:
-                //switch LocationTransmitter into watching mode
-                mLocationTransmitter.startWatching(null);
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Emergency, friend_numbers);
                 //make phone call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.call();
-                //TODO: send text messages every few seconds?
                 break;
 
             case R.id.button_alert:
-                //switch LocationTransmitter into watching mode to make sure it's up to date
-                mLocationTransmitter.startWatching(null);
                 //send text message
                 mLocationTransmitter.transmitLocation(my_name, my_number, LocationTransmitter.Mode.Alert, friend_numbers);
+                //do simulated call
                 mCallManager.reset(new HashSet<String>(friend_numbers.values()).toArray(new String[0]));
                 mCallManager.simulateCall();
                 break;
@@ -139,25 +134,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

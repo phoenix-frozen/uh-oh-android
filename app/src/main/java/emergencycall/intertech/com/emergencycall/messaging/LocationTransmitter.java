@@ -142,9 +142,9 @@ public class LocationTransmitter implements LocationListener {
                     httpPost.setEntity(new StringEntity(message));
                     Log.i("LocationTransmitter", "doing web request now...");
                     HttpResponse httpResponse = httpClient.execute(httpPost);
-                    HttpEntity responsecontent = httpResponse.getEntity();
+                    HttpEntity responseContent = httpResponse.getEntity();
 
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(responsecontent.getContent()));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(responseContent.getContent()));
 
                     StringBuilder buf = new StringBuilder();
 
@@ -170,7 +170,7 @@ public class LocationTransmitter implements LocationListener {
                         Log.i("LocationTransmitter", "web service message transmission succeeded");
 
                     reader.close();
-                    responsecontent.consumeContent();
+                    responseContent.consumeContent();
                 } catch (UnsupportedEncodingException e) {
                     Log.e("LocationTransmitter", "Web service post data encoding failed");
                     e.printStackTrace();
@@ -185,22 +185,12 @@ public class LocationTransmitter implements LocationListener {
     }
 
     private void doSmsTransmission(String myName, String myNumber, Mode mode, Location location, Map<String, String> destinations) {
-        for(Map.Entry<String, String> entry : destinations.entrySet()) {
-            String message;
+        if(mode == Mode.Emergency) {
+            for (Map.Entry<String, String> entry : destinations.entrySet()) {
+                String message = String.format("Hey, it's %s. I'm in a sketchy area, so I wanted someone to know where I am. I'm here: https://www.google.com/maps/@%s,%s17z", myName, Location.convert(location.getLatitude(), Location.FORMAT_DEGREES), Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
 
-            switch(mode) {
-                case Emergency:
-                    message = "Hey, it's %s. I'm in serious trouble. Please come help me, or call the police. I'm here: https://www.google.com/maps/@%s,%s17z";
-                    break;
-
-                default:
-                    message = "Hey, it's %s. I'm in a sketchy area, so I wanted someone to know where I am. I'm here: https://www.google.com/maps/@%s,%s17z";
-                    break;
+                smsManager.sendTextMessage(entry.getValue(), null, message, null, null);
             }
-
-            message = String.format(message, myName, Location.convert(location.getLatitude(), Location.FORMAT_DEGREES), Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
-
-            smsManager.sendTextMessage(entry.getValue(), null, message, null, null);
         }
     }
 
